@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Network, Shield, Lock, ArrowRight, Code2, 
@@ -6,6 +6,172 @@ import {
   CheckCircle2, ArrowUpRight, Building
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+
+const HkitInteractiveHeroGraphic = () => {
+  const [step, setStep] = useState(0);
+  const [logs, setLogs] = useState<string[]>([
+    "Gateway idle. Awaiting secure incoming transactions..."
+  ]);
+
+  useEffect(() => {
+    const steps = [
+      {
+        log: "INBOUND: Node #42 (General Hospital) requesting clinical sync...",
+        nextDuration: 2500
+      },
+      {
+        log: "SECURITY: mTLS verification OK. Resolving Patient identifier...",
+        nextDuration: 2500
+      },
+      {
+        log: "CONSENT: Verifying Kwara State Consent Registry Policy... Granted.",
+        nextDuration: 2500
+      },
+      {
+        log: "ROUTING: Mapped to HL7 FHIR R4. Transacting with National Hub... HTTP 200 OK.",
+        nextDuration: 3000
+      }
+    ];
+
+    let timer: any;
+    const runCycle = (currentStep: number) => {
+      setStep(currentStep);
+      const nextStepInfo = steps[currentStep];
+      
+      setLogs(prev => {
+        const nextLogs = [...prev, nextStepInfo.log];
+        if (nextLogs.length > 3) nextLogs.shift();
+        return nextLogs;
+      });
+
+      timer = setTimeout(() => {
+        runCycle((currentStep + 1) % steps.length);
+      }, nextStepInfo.nextDuration);
+    };
+
+    const startTimer = setTimeout(() => {
+      runCycle(0);
+    }, 1500);
+
+    return () => {
+      clearTimeout(startTimer);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  return (
+    <div className="w-full max-w-md bg-white/40 backdrop-blur-md border border-emerald-100/50 rounded-xl p-5 shadow-[0_8px_32px_rgba(4,48,24,0.03)] flex flex-col h-[380px] justify-between relative overflow-hidden select-none">
+      <div className="absolute -top-10 -right-10 w-28 h-28 bg-[#86efac]/10 blur-2xl rounded-full pointer-events-none" />
+
+      <div className="flex justify-between items-center pb-3 border-b border-zinc-200/40 z-10">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="text-[10px] font-mono font-bold text-zinc-800 uppercase tracking-widest">HIE Gateway Node</span>
+        </div>
+        <span className="text-[9px] font-mono text-zinc-400">STATE GATEWAY</span>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center relative min-h-[180px] my-2">
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20%" y1="50%" x2="50%" y2="50%" stroke="rgba(16, 185, 129, 0.15)" strokeWidth="1.5" strokeDasharray="4 4" />
+          <line x1="50%" y1="20%" x2="50%" y2="50%" stroke="rgba(16, 185, 129, 0.15)" strokeWidth="1.5" strokeDasharray="4 4" />
+          <line x1="80%" y1="50%" x2="50%" y2="50%" stroke="rgba(16, 185, 129, 0.15)" strokeWidth="1.5" strokeDasharray="4 4" />
+
+          {step === 0 && (
+            <motion.circle 
+              cx="20%" cy="50%" r="4" 
+              fill="#10b981" 
+              animate={{ cx: ["20%", "50%"], opacity: [0, 1, 1, 0] }}
+              transition={{ duration: 2.2, ease: "easeInOut", repeat: Infinity }}
+            />
+          )}
+
+          {step === 2 && (
+            <motion.circle 
+              cx="50%" cy="20%" r="4" 
+              fill="#10b981" 
+              animate={{ cy: ["20%", "50%"], opacity: [0, 1, 1, 0] }}
+              transition={{ duration: 2.2, ease: "easeInOut", repeat: Infinity }}
+            />
+          )}
+
+          {step === 3 && (
+            <motion.circle 
+              cx="50%" cy="50%" r="4" 
+              fill="#10b981" 
+              animate={{ cx: ["50%", "80%"], opacity: [0, 1, 1, 0] }}
+              transition={{ duration: 2.6, ease: "easeInOut", repeat: Infinity }}
+            />
+          )}
+        </svg>
+
+        <div className="absolute left-[5%] flex flex-col items-center gap-1.5">
+          <div className={`w-10 h-10 rounded-lg border flex items-center justify-center transition-colors duration-300 bg-white/80 ${
+            step === 0 ? "border-primary text-primary shadow-[0_0_12px_rgba(16,185,129,0.2)]" : "border-zinc-200 text-zinc-400"
+          }`}>
+            <Building2 className="w-5 h-5" />
+          </div>
+          <span className="text-[8px] font-mono font-bold text-zinc-500 uppercase">Hospital</span>
+        </div>
+
+        <div className="absolute top-[5%] flex flex-col items-center gap-1.5">
+          <div className={`w-10 h-10 rounded-lg border flex items-center justify-center transition-colors duration-300 bg-white/80 ${
+            step === 2 ? "border-primary text-primary shadow-[0_0_12px_rgba(16,185,129,0.2)]" : "border-zinc-200 text-zinc-400"
+          }`}>
+            <Shield className="w-5 h-5" />
+          </div>
+          <span className="text-[8px] font-mono font-bold text-zinc-500 uppercase">Consent</span>
+        </div>
+
+        <div className="absolute flex flex-col items-center gap-2">
+          <div className={`w-14 h-14 rounded-xl border-2 flex items-center justify-center transition-colors duration-300 bg-white relative z-10 ${
+            step === 1 ? "border-primary shadow-[0_0_20px_rgba(16,185,129,0.3)]" : "border-emerald-100/80 shadow-[0_8px_24px_rgba(4,48,24,0.02)]"
+          }`}>
+            <img 
+              src="/Hkit.png" 
+              alt="Hkit Icon" 
+              className="h-8 w-auto filter drop-shadow-[0_0_4px_rgba(16,185,129,0.1)]"
+            />
+          </div>
+          <span className="text-[8px] font-mono font-extrabold text-zinc-800 uppercase tracking-widest bg-emerald-100/40 px-1.5 py-0.5 rounded border border-emerald-200/20">Hkit Node</span>
+        </div>
+
+        <div className="absolute right-[5%] flex flex-col items-center gap-1.5">
+          <div className={`w-10 h-10 rounded-lg border flex items-center justify-center transition-colors duration-300 bg-white/80 ${
+            step === 3 ? "border-primary text-primary shadow-[0_0_12px_rgba(16,185,129,0.2)]" : "border-zinc-200 text-zinc-400"
+          }`}>
+            <Network className="w-5 h-5" />
+          </div>
+          <span className="text-[8px] font-mono font-bold text-zinc-500 uppercase">Registry</span>
+        </div>
+      </div>
+
+      <div className="rounded-lg border border-white/10 bg-[#060c09] p-3 font-mono text-[9px] leading-relaxed text-zinc-400 overflow-hidden shadow-[4px_4px_12px_rgba(4,48,24,0.02)] h-[90px] flex flex-col justify-end">
+        <div className="flex items-center justify-between border-b border-white/5 pb-1 mb-1 text-zinc-500">
+          <span>hie_transaction_stream</span>
+          <span className="text-[8px] bg-primary/20 text-primary px-1.5 py-0.2 rounded font-bold uppercase">LIVE</span>
+        </div>
+        <div className="space-y-0.5 overflow-hidden flex flex-col justify-end">
+          {logs.map((log, idx) => {
+            const isHighlight = idx === logs.length - 1;
+            let logColor = isHighlight ? "text-primary" : "text-zinc-500";
+            if (log.includes("OK") || log.includes("Granted")) {
+              logColor = isHighlight ? "text-emerald-400" : "text-emerald-600";
+            }
+            return (
+              <div key={idx} className={`truncate transition-all duration-300 ${logColor} ${
+                isHighlight ? "font-bold text-[9.5px]" : ""
+              }`}>
+                &gt; {log}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -52,38 +218,45 @@ const Landing = () => {
         </div>
       </header>
 
-      {/* 2. HERO SECTION */}
-      <section className="relative z-10 pt-40 pb-24 lg:pt-52 lg:pb-36 container mx-auto px-6 text-center max-w-4xl">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono mb-8 uppercase tracking-widest shadow-[0_2px_8px_rgba(16,185,129,0.05)]">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          Kwara State Health Information Exchange
-        </div>
-        
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-zinc-900 mb-6 leading-[1.08]">
-          The secure backbone of <br />
-          modern digital healthcare.
-        </h1>
-        
-        <p className="text-base sm:text-lg text-zinc-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Hkit provides unified national-scale interoperability, master patient indexing, and real-time consent enforcement. Connect once, exchange with the entire healthcare ecosystem securely.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <Button 
-            onClick={() => navigate("/register")} 
-            size="lg" 
-            className="w-full sm:w-auto bg-primary text-white hover:bg-primary/95 font-semibold px-8 h-12 rounded-lg transition-all shadow-[0_4px_20px_rgba(16,185,129,0.25)]"
-          >
-            Request Node Access
-          </Button>
-          <Button 
-            onClick={() => navigate("/login")} 
-            size="lg" 
-            variant="outline" 
-            className="w-full sm:w-auto border-emerald-200/60 bg-white/40 backdrop-blur-sm hover:bg-white/80 font-semibold px-8 h-12 rounded-lg text-zinc-800 transition-all shadow-[0_4px_12px_rgba(4,48,24,0.02)]"
-          >
-            Management Portal
-          </Button>
+      {/* 2. HERO SECTION (OVERHAULED TWO-COLUMN LAYOUT) */}
+      <section className="relative z-10 pt-32 pb-20 lg:pt-44 lg:pb-32 container mx-auto px-6 max-w-6xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Column: Headline and Actions */}
+          <div className="lg:col-span-7 space-y-6 text-left relative z-10">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-900 leading-[1.08] mb-4">
+              The secure backbone of <br />
+              <span className="bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">modern digital healthcare.</span>
+            </h1>
+            
+            <p className="text-sm sm:text-base text-zinc-600 max-w-xl leading-relaxed">
+              Hkit provides unified national-scale interoperability, master patient indexing, and real-time consent enforcement. Connect once, exchange with the entire healthcare ecosystem securely.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <Button 
+                onClick={() => navigate("/register")} 
+                size="lg" 
+                className="w-full sm:w-auto bg-primary text-white hover:bg-primary/95 font-semibold px-8 h-12 rounded-lg transition-all shadow-[0_4px_20px_rgba(16,185,129,0.2)]"
+              >
+                Request Node Access
+              </Button>
+              <Button 
+                onClick={() => navigate("/login")} 
+                size="lg" 
+                variant="outline" 
+                className="w-full sm:w-auto border-emerald-200/60 bg-white/40 backdrop-blur-sm hover:bg-white/80 font-semibold px-8 h-12 rounded-lg text-zinc-800 transition-all shadow-[0_4px_12px_rgba(4,48,24,0.02)]"
+              >
+                Management Portal
+              </Button>
+            </div>
+          </div>
+
+          {/* Right Column: High-Fidelity Animated Console Graphic */}
+          <div className="lg:col-span-5 relative flex justify-center items-center h-[400px]">
+            <HkitInteractiveHeroGraphic />
+          </div>
+
         </div>
       </section>
 
