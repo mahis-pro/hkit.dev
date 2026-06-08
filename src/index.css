@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+Definition of the light neon-green design system. 
+All colors are HSL format.
+*/
+
+@layer base {
+  :root {
+    --font-sans: "Figtree", sans-serif;
+    --background: 150 25% 98%;
+    --foreground: 160 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 25% 12%;
+
+    --primary: 158 100% 32%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 158 100% 45%;
+
+    --secondary: 150 15% 94%;
+    --secondary-foreground: 160 25% 12%;
+
+    --muted: 150 12% 93%;
+    --muted-foreground: 160 12% 42%;
+
+    --accent: 158 80% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 12% 88%;
+    --input: 150 12% 88%;
+    --ring: 158 100% 32%;
+
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --info: 199 89% 48%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 150 15% 95%;
+    --sidebar-foreground: 160 25% 15%;
+    --sidebar-primary: 158 100% 32%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 150 15% 90%;
+    --sidebar-accent-foreground: 158 100% 32%;
+    --sidebar-border: 150 12% 88%;
+    --sidebar-ring: 158 100% 32%;
+
+    --chart-1: 158 100% 32%;
+    --chart-2: 199 89% 48%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 280 76% 53%;
+    --chart-5: 340 82% 52%;
+
+    --shadow-glow: 0 0 30px hsl(158 100% 32% / 0.15);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow: 0 8px 32px 0 rgba(4, 48, 24, 0.03);
+  }
+  
+  .glass-card-dark {
+    background-color: rgba(8, 14, 11, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .perspective-3d {
+    perspective: 1000px;
+  }
+
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+  }
+
+  .card-3d:hover {
+    transform: rotateX(2.5deg) rotateY(-2.5deg) translateY(-4px);
+    box-shadow: 0 20px 40px rgba(4, 48, 24, 0.06);
+    border-color: rgba(158, 255, 203, 0.4) !important;
+  }
+
+  /* Sweep animation for glass shine */
+  .shine-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shine-sweep::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 30%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.45) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(30deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .shine-sweep:hover::after {
+    left: 130%;
+    opacity: 1;
+    transition: all 0.8s ease-in-out;
+  }
+}
