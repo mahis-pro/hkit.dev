@@ -24,7 +24,11 @@ const Landing = () => {
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/40 bg-white/25 backdrop-blur-md">
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-bold text-white text-sm shadow-[0_4px_12px_rgba(16,185,129,0.2)]">Hk</div>
+            <img 
+              src="/Hkit.png" 
+              alt="Hkit Logo" 
+              className="h-8 w-auto filter drop-shadow-[0_0_8px_rgba(0,255,156,0.15)]"
+            />
             <span className="font-bold text-lg tracking-tight text-zinc-900">Hkit</span>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-xs font-mono uppercase tracking-wider text-zinc-600">

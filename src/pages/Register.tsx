@@ -28,7 +28,11 @@ const Register = () => {
         {/* Top Header */}
         <div className="flex items-center justify-between z-10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-bold text-white text-sm shadow-[0_4px_12px_rgba(16,185,129,0.2)]">Hk</div>
+            <img 
+              src="/Hkit.png" 
+              alt="Hkit Logo" 
+              className="h-8 w-auto filter drop-shadow-[0_0_8px_rgba(0,255,156,0.15)]"
+            />
             <span className="font-bold text-sm tracking-tight text-zinc-800 uppercase font-mono">HKIT REGISTRATION PLATFORM</span>
           </div>
         </div>
